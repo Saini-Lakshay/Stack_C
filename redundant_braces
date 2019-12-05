@@ -1,0 +1,64 @@
+/**
+ * @input A : String termination by '\0'
+ * 
+ * @Output Integer
+*/
+int y=0;
+
+struct stack 
+{
+    char ch;
+    struct stack *next;
+};
+void push(struct stack **head, char c)
+{
+    y++;
+    struct stack *node = (struct stack *)malloc(sizeof(struct stack));
+    node->ch = c;
+    node->next = *head;
+    *head = node;
+}
+char top(struct stack **head)
+{
+    struct stack *curr = *head;
+    return curr->ch;
+}
+void pop(struct stack **head)
+{
+    struct stack *curr = *head;
+    *head = curr->next;
+}
+int isempty(struct stack **head)
+{
+    if(head == NULL)
+    return 1;
+    return 0;
+}
+
+int braces(char* A) 
+{
+    struct stack *head = NULL;
+    int i=0;
+    
+    while(A[i]!='\0')
+    {
+        if(A[i]=='(')
+        {
+            push(&head,A[i]);
+        }
+        else if(A[i]=='+' || A[i]=='-' || A[i]=='*' || A[i]=='/')
+        {
+            push(&head,A[i]);
+        }
+        else if(A[i]==')')
+        {
+            if(top(&head)=='(' || isempty(&head))
+                return 1;
+            pop(&head);
+            pop(&head);
+        }
+        i++;
+    }
+    
+    return 0;
+}
